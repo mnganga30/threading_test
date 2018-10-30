@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <iostream>
 #include <thread>
+#include <mutex>
+
 
 
 /*
@@ -11,10 +13,11 @@
 *
 */
 static const int num_threads = 10;
-
+static std::mutex barrier;
 
 
 void call_from_thread(int tid){
+  std::lock_guard<std::mutex> block_thread_until_finish_this_job(barrier);
   std::cout << "called by Thread:" << tid << std::endl;
 }
 
@@ -22,7 +25,7 @@ int main()
 {
   std::thread t[num_threads];
 
-  // luanches the num_threads amount of threads
+  // launches the num_threads amount of threads
   for(int i =0; i< num_threads; i++)
   {
       t[i] = std::thread(call_from_thread, i);
