@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <iostream>
 #include <thread>
 
 
@@ -13,8 +14,8 @@ static const int num_threads = 10;
 
 
 
-void call_from_thread(){
-  std::printf("Hello World \n" );
+void call_from_thread(int tid){
+  std::cout << "called by Thread:" << tid << std::endl;
 }
 
 int main()
@@ -24,8 +25,10 @@ int main()
   // luanches the num_threads amount of threads
   for(int i =0; i< num_threads; i++)
   {
-      t[i] = std::thread(call_from_thread);
+      t[i] = std::thread(call_from_thread, i);
     }
+
+    std::cout << "called from main\n";
 
 
 // joins all the threads with the main one
